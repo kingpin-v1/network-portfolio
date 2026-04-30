@@ -227,7 +227,22 @@ pre {
 .ep-url strong { color: var(--cyan); font-weight: 400; }
 .ep-desc { font-size: 13px; color: var(--text3); margin-top: 2px; }
 
-/* ── Responsiveness ── */
+.back-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+  text-decoration: none;
+  padding: 1rem 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .15s;
+  margin-left: auto;
+  border-left: 1px solid var(--border);
+  padding-left: 1.5rem;
+}
+.back-link:hover { color: var(--cyan); }
 @media (max-width: 700px) {
   .grid-2, .grid-3, .area-cards { grid-template-columns: 1fr; }
   .hero h1 { font-size: 1.8rem; }
@@ -245,8 +260,8 @@ pre {
     <button class="active" onclick="showTab('overview', this)">Overview</button>
     <button onclick="showTab('topology', this)">Topology</button>
     <button onclick="showTab('ospf', this)">OSPF Design</button>
-
   </nav>
+  <a class="back-link" href="../../index.html">&#8592; Portfolio</a>
 </header>
 
 <main>
