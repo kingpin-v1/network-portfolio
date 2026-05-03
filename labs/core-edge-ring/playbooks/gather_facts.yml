@@ -1,0 +1,32 @@
+---
+- name: Gather device facts
+  hosts: all
+  gather_facts: false
+  serial: 1
+
+  tasks:
+    - name: Collect device info via EVE-NG telnet
+      script: >
+        eve_telnet.py {{ ansible_port }} {{ inventory_hostname }}
+        "show version | include IOS"
+        "show ip interface brief"
+        "show ip ospf neighbor"
+      args:
+        chdir: "{{ playbook_dir }}"
+        executable: python3
+      register: device_info
+      delegate_to: localhost
+
+    - name: Parse and display output
+      set_fact:
+        info: "{{ device_info.stdout | from_json }}"
+
+    - name: Display device summary
+      debug:
+        msg:
+          - "=== {{ info.hostname }} ==="
+          - "IOS : {{ info.results['show version | include IOS'] }}"
+          - "Interfaces:"
+          - "{{ info.results['show ip interface brief'] }}"
+          - "OSPF Neighbors:"
+          - "{{ info.results['show ip ospf neighbor'] }}"
