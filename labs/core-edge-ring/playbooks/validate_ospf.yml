@@ -1,0 +1,48 @@
+---
+- name: Validate OSPF adjacencies
+  hosts: all
+  gather_facts: false
+  serial: 1
+
+  vars:
+    expected_neighbors:
+      AGG1: 6
+      AGG2: 6
+      AGG3: 6
+      AGG4: 6
+      Site-A1: 2
+      Site-A2: 2
+      Site-B1: 2
+      Site-B2: 2
+      Site-C1: 2
+      Site-C2: 2
+      Site-D1: 2
+      Site-D2: 2
+
+  tasks:
+    - name: Collect OSPF neighbor table
+      script: >
+        eve_telnet.py {{ ansible_port }} {{ inventory_hostname }}
+        "show ip ospf neighbor"
+      args:
+        chdir: "{{ playbook_dir }}"
+        executable: python3
+      register: raw_output
+      delegate_to: localhost
+
+    - name: Parse output
+      set_fact:
+        node_data: "{{ raw_output.stdout | from_json }}"
+
+    - name: Validate OSPF neighbors
+      vars:
+        ospf_output: "{{ node_data.results['show ip ospf neighbor'] }}"
+        full_count: "{{ ospf_output | regex_findall('FULL') | length }}"
+        expected: "{{ expected_neighbors[inventory_hostname] }}"
+      debug:
+        msg: >-
+          {% if full_count | int == expected | int %}
+          ✅ PASS — {{ inventory_hostname }}: {{ full_count }}/{{ expected }} neighbors FULL
+          {% else %}
+          ❌ FAIL — {{ inventory_hostname }}: {{ full_count }}/{{ expected }} neighbors FULL
+          {% endif %}
