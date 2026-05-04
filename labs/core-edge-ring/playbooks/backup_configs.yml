@@ -1,0 +1,31 @@
+---
+- name: Backup running configurations
+  hosts: all
+  gather_facts: false
+  serial: 1
+
+  tasks:
+    - name: Collect running config
+      script: >
+        eve_telnet.py {{ ansible_port }} {{ inventory_hostname }}
+        "terminal length 0"
+        "show running-config"
+      args:
+        chdir: "{{ playbook_dir }}"
+        executable: python3
+      register: raw_output
+      delegate_to: localhost
+
+    - name: Parse output
+      set_fact:
+        node_data: "{{ raw_output.stdout | from_json }}"
+
+    - name: Save config to file
+      copy:
+        content: "{{ node_data.results['show running-config'] }}"
+        dest: "{{ playbook_dir }}/../backups/{{ inventory_hostname }}.txt"
+      delegate_to: localhost
+
+    - name: Confirm backup
+      debug:
+        msg: "✅ {{ inventory_hostname }} — config saved to backups/{{ inventory_hostname }}.txt"

@@ -1,0 +1,174 @@
+Building configuration...
+Current configuration : 3004 bytes
+!
+! Last configuration change at 00:42:27 UTC Mon May 4 2026
+!
+version 17.16
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname agg1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain name lab.local
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-67108880
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67108880
+ revocation-check none
+ rsakeypair TP-self-signed-67108880
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-67108880
+!
+!
+memory free low-watermark processor 79983
+!
+!
+spanning-tree mode rapid-pvst
+!
+enable secret 9 $9$qNyKp8gtjfUmrE$Vs5anDHZWmzXcpkCUeNJvdP7Q2VBMxZL/bi9vaqyOUI
+!
+username admin privilege 15 secret 9 $9$NIPqSpUg1YDCYE$UueqwN2EThy.wyPPvBrTLaA5pTNFjfIEnSpcTs1X5PE
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description AGG1 | Router-ID 10.0.0.1
+ ip address 10.0.0.1 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description Connect | AGG2 E0/0 | Area0 | 10.1.0.0/30
+ ip address 10.1.0.1 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/1
+ description Connect | AGG4 E0/1 | Area0 | 10.1.0.12/30
+ ip address 10.1.0.14 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/2
+ description Downlink | Site-A1 E0/0 | Area1 | 10.1.1.0/30
+ ip address 10.1.1.1 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/3
+ description Downlink | Site-A2 E0/0 | Area1 | 10.1.1.4/30
+ ip address 10.1.1.5 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet1/0
+ description Downlink | Site-D1 E0/1 | Area4 | 10.1.4.8/30
+ ip address 10.1.4.9 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet1/1
+ description Downlink | Site-D2 E0/1 | Area4 | 10.1.4.12/30
+ ip address 10.1.4.13 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet1/2
+ description CLOUD0-LAN-BRIDGE | 192.168.1.253/24
+ ip address 192.168.1.253 255.255.255.0
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 10.0.0.1
+ area 1 range 10.1.1.0 255.255.255.0
+ area 4 range 10.1.4.0 255.255.255.0
+ redistribute static
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ no passive-interface Ethernet0/2
+ no passive-interface Ethernet0/3
+ no passive-interface Ethernet1/0
+ no passive-interface Ethernet1/1
+ network 10.0.0.1 0.0.0.0 area 0
+ network 10.1.0.0 0.0.0.3 area 0
+ network 10.1.0.12 0.0.0.3 area 0
+ network 10.1.1.0 0.0.0.3 area 1
+ network 10.1.1.4 0.0.0.3 area 1
+ network 10.1.4.8 0.0.0.3 area 4
+ network 10.1.4.12 0.0.0.3 area 4
+!
+ip forward-protocol nd
+ip forward-protocol udp
+!
+!
+ip http server
+ip http secure-server
+ip route 192.168.100.0 255.255.255.0 192.168.1.1
+ip ssh bulk-mode 131072
+no logging btrace
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+!
+end

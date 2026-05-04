@@ -1,0 +1,140 @@
+Building configuration...
+Current configuration : 1858 bytes
+!
+! Last configuration change at 00:44:16 UTC Mon May 4 2026
+!
+version 17.16
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname site-d1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab.local
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-67109056
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67109056
+ revocation-check none
+ rsakeypair TP-self-signed-67109056
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-67109056
+!
+!
+memory free low-watermark processor 79983
+!
+!
+spanning-tree mode rapid-pvst
+!
+enable secret 9 $9$5pn6F4LaFwWIpE$GVgtu61BbCmX0JXB4nGg.c18wfa3Ee/KuGwhWaJdO.U
+!
+username admin privilege 15 secret 9 $9$ytbRLIsNq8l8YE$/neOY7Wp5k9UCXMSxIcxdBZtmHkM/dR1lal.8K7kqd2
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Site-D1 | Router-ID 10.0.0.41
+ ip address 10.0.0.41 255.255.255.255
+!
+interface Ethernet0/0
+ description Uplink | AGG4 E1/0 | Area4 | 10.1.4.0/30
+ ip address 10.1.4.2 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/1
+ description Uplink | AGG1 E1/0 | Area4 | 10.1.4.8/30
+ ip address 10.1.4.10 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 10.0.0.41
+ passive-interface Loopback0
+ network 10.0.0.41 0.0.0.0 area 4
+ network 10.1.4.0 0.0.0.3 area 4
+ network 10.1.4.8 0.0.0.3 area 4
+!
+ip forward-protocol nd
+ip forward-protocol udp
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+no logging btrace
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+!
+end

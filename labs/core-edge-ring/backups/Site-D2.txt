@@ -1,0 +1,141 @@
+Building configuration...
+Current configuration : 1860 bytes
+!
+! Last configuration change at 00:44:27 UTC Mon May 4 2026
+!
+version 17.16
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname site-d2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name lab.local
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-67109040
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67109040
+ revocation-check none
+ rsakeypair TP-self-signed-67109040
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-67109040
+!
+!
+memory free low-watermark processor 79983
+!
+!
+spanning-tree mode rapid-pvst
+!
+enable secret 9 $9$rc2cAu84I9gyk.$hLwhY3A5gTgM/KSiNkKsbjAeIrEWTh5xI1Eq2XstyhY
+!
+username admin privilege 15 secret 9 $9$tWOAVC2RpNX.x.$5yBA6t3Jq1XvouPjeSEqA2ysDcUf6K5kJ7hDGuEcGhQ
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Site-D2 | Router-ID 10.0.0.42
+ ip address 10.0.0.42 255.255.255.255
+!
+interface Ethernet0/0
+ description Uplink | AGG4 E1/1 | Area4 | 10.1.4.4/30
+ ip address 10.1.4.6 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/1
+ description Uplink | AGG1 E1/1 | Area4 | 10.1.4.12/30
+ ip address 10.1.4.14 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 10.0.0.42
+ passive-interface Loopback0
+ network 10.0.0.42 0.0.0.0 area 4
+ network 10.1.4.4 0.0.0.3 area 4
+ network 10.1.4.12 0.0.0.3 area 4
+!
+ip forward-protocol nd
+ip forward-protocol udp
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+no logging btrace
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
+site-d

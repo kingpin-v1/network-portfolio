@@ -1,0 +1,141 @@
+Building configuration...
+Current configuration : 1906 bytes
+!
+! Last configuration change at 00:43:12 UTC Mon May 4 2026
+!
+version 17.16
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname site-a1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain name lab.local
+ip cef
+login on-success log
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-67108944
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-67108944
+ revocation-check none
+ rsakeypair TP-self-signed-67108944
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-67108944
+!
+!
+memory free low-watermark processor 79983
+!
+!
+spanning-tree mode rapid-pvst
+!
+enable secret 9 $9$BU1dH2qIY2.qhk$pREKhhYSOH0fgitAUjyeuBV0XkMZFlrg9UdmvJxeYu.
+!
+username admin privilege 15 secret 9 $9$Mtm5OaG470hk6.$SeKo0.pjluoc2PCR7whZd/rN..epNr7bjMYNpjYx6Q6
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Site-A1 | Router-ID 10.0.0.11
+ ip address 10.0.0.11 255.255.255.255
+!
+interface Ethernet0/0
+ description Uplink | AGG1 E0/2 | Area1 | 10.1.1.0/30
+ ip address 10.1.1.2 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/1
+ description Uplink | AGG2 E0/2 | Area1 | 10.1.1.12/30
+ ip address 10.1.1.14 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 10.0.0.11
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ network 10.0.0.11 0.0.0.0 area 1
+ network 10.1.1.0 0.0.0.3 area 1
+ network 10.1.1.12 0.0.0.3 area 1
+!
+ip forward-protocol nd
+ip forward-protocol udp
+!
+!
+ip http server
+ip http secure-server
+ip ssh bulk-mode 131072
+no logging btrace
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
