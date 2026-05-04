@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adam Smith — Network Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0d1117;
+  --bg2:    #161b22;
+  --bg3:    #21262d;
+  --border: #30363d;
+  --text:   #e6edf3;
+  --text2:  #8b949e;
+  --text3:  #6e7681;
+  --cyan:   #39d0c7;
+  --blue:   #58a6ff;
+  --green:  #3fb950;
+  --amber:  #d29922;
+  --red:    #f85149;
+  --purple: #bc8cff;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  padding: 0 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(22,27,34,0.96);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  height: 56px;
+}
+.logo { font-family: var(--mono); font-size: 13px; color: var(--cyan); letter-spacing: .05em; }
+.logo span { color: var(--text3); }
+.back-link {
+  font-family: var(--mono); font-size: 12px; color: var(--text3);
+  text-decoration: none; transition: color .15s;
+  display: flex; align-items: center; gap: 6px;
+  border-left: 1px solid var(--border); padding-left: 1.25rem;
+}
+.back-link:hover { color: var(--cyan); }
+
+/* ── Layout ── */
+.page { max-width: 960px; margin: 0 auto; padding: 0 2rem 5rem; }
+
+/* ── Hero ── */
+.hero {
+  padding: 3.5rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px; color: var(--cyan);
+  letter-spacing: .14em; text-transform: uppercase; margin-bottom: .75rem;
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300;
+  line-height: 1.15; margin-bottom: .75rem; letter-spacing: -.01em;
+}
+.hero h1 em { font-style: normal; color: var(--cyan); }
+.hero-sub { font-size: 15px; color: var(--text2); max-width: 580px; line-height: 1.7; margin-bottom: 1.75rem; }
+.hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.hero-stat label {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 2px;
+}
+.hero-stat span { font-family: var(--mono); font-size: 13px; color: var(--text2); }
+
+/* ── Section ── */
+.section-label {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem;
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+  background: rgba(210,153,34,.06);
+  border: 1px solid rgba(210,153,34,.25);
+  border-left: 3px solid var(--amber);
+  border-radius: 8px;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.disclaimer-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.disclaimer-body { font-size: 13.5px; color: var(--text2); line-height: 1.7; }
+.disclaimer-body strong { color: var(--amber); font-weight: 500; }
+.disclaimer-body p + p { margin-top: .5rem; }
+
+/* ── Stack cards ── */
+.stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+.stack-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.1rem 1.25rem;
+}
+.stack-card-label {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .6rem;
+}
+.stack-item { display: flex; align-items: center; gap: 8px; margin-bottom: .4rem; font-size: 13px; color: var(--text2); }
+.stack-item:last-child { margin-bottom: 0; }
+.stack-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Project cards ── */
+.project-list { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; }
+.project-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.5rem;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 1rem; align-items: start;
+}
+.project-card:hover { border-color: var(--border); }
+.project-eyebrow {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem;
+}
+.project-title { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: .5rem; }
+.project-desc { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: .9rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.project-tag {
+  font-family: var(--mono); font-size: 10.5px; padding: 2px 8px;
+  border-radius: 3px; background: var(--bg3); border: 1px solid var(--border); color: var(--text3);
+}
+.project-meta { text-align: right; }
+.project-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 10px; padding: 3px 8px;
+  border-radius: 3px; text-transform: uppercase; letter-spacing: .07em;
+  white-space: nowrap;
+}
+.status-live    { background: rgba(63,185,80,.1);  color: var(--green); border: 1px solid rgba(63,185,80,.25); }
+.status-planned { background: rgba(110,118,129,.1); color: var(--text3); border: 1px solid var(--border); }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.project-lab {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  margin-top: .4rem; display: block;
+}
+
+/* ── Playbook table ── */
+.playbook-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 2.5rem; }
+.playbook-table th {
+  text-align: left; padding: 8px 12px; color: var(--text3);
+  font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: .07em; border-bottom: 1px solid var(--border); font-weight: 400;
+}
+.playbook-table td { padding: 10px 12px; border-bottom: 1px solid rgba(48,54,61,.5); color: var(--text2); vertical-align: top; }
+.playbook-table tr:last-child td { border-bottom: none; }
+.playbook-table tr:hover td { background: var(--bg2); }
+.playbook-table td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--cyan); white-space: nowrap; }
+.playbook-table td:nth-child(2) { color: var(--text); }
+.op-badge {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  padding: 1px 7px; border-radius: 3px;
+}
+.op-read   { background: rgba(88,166,255,.1);  color: var(--blue);   border: 1px solid rgba(88,166,255,.25); }
+.op-write  { background: rgba(63,185,80,.1);   color: var(--green);  border: 1px solid rgba(63,185,80,.25); }
+.op-gen    { background: rgba(188,140,255,.1); color: var(--purple); border: 1px solid rgba(188,140,255,.25); }
+
+/* ── Approach section ── */
+.approach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+.approach-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.25rem;
+}
+.approach-card h3 { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: .5rem; }
+.approach-card p  { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  header { padding: 0 1rem; }
+  .page { padding: 0 1.25rem 3rem; }
+  .stack-grid { grid-template-columns: 1fr; }
+  .approach-grid { grid-template-columns: 1fr; }
+  .project-card { grid-template-columns: 1fr; }
+  .project-meta { text-align: left; }
+  .hero-stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">&#x25C6; Adam Smith <span>/ automation</span></div>
+  <a class="back-link" href="../../index.html">&#8592; Portfolio</a>
+</header>
+
+<div class="page">
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-eyebrow">// network automation portfolio</div>
+    <h1>Network <em>Automation</em></h1>
+    <p class="hero-sub">
+      A growing collection of automation work built around real lab infrastructure.
+      Focused on practical, repeatable tooling for configuration management,
+      operational validation, and infrastructure-as-code — using Ansible as the
+      primary automation engine.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><label>Engine</label><span>Ansible 2.16.3</span></div>
+      <div class="hero-stat"><label>Python</label><span>3.12.3</span></div>
+      <div class="hero-stat"><label>Nodes Managed</label><span>12</span></div>
+      <div class="hero-stat"><label>Playbooks</label><span>4 live</span></div>
+      <div class="hero-stat"><label>Platform</label><span>WSL2 / Ubuntu</span></div>
+    </div>
+  </div>
+
+  <!-- ── Disclaimer ── -->
+  <div class="section-label">Connectivity Note</div>
+  <div class="disclaimer">
+    <div class="disclaimer-icon">⚠</div>
+    <div class="disclaimer-body">
+      <p><strong>Telnet used for Ansible connectivity — not SSH.</strong> In production environments, SSH is the required standard for device management and Ansible connectivity. SSH provides encrypted transport, protecting credentials and session data in transit. Telnet transmits everything in plaintext and has no place in a production network.</p>
+      <p>In this lab, Cisco IOL's SSH implementation is minimal and unstable under programmatic access — sessions hang, the SSH process randomly stops accepting connections, and stale VTY sessions accumulate under sequential Ansible runs. After exhaustive troubleshooting, EVE-NG's direct telnet console ports were chosen as the reliable workaround. SSH is still configured and functional on all 12 nodes and is used for manual access via Termius. This is a known IOL limitation that does not apply to CSR1000v, IOS-XE virtual machines, or physical hardware.</p>
+    </div>
+  </div>
+
+  <!-- ── Stack ── -->
+  <div class="section-label">Automation Stack</div>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-card-label">Orchestration</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--cyan)"></div>Ansible 2.16.3</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--cyan)"></div>cisco.ios collection</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--cyan)"></div>ansible.netcommon</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-card-label">Scripting</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--blue)"></div>Python 3.12</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--blue)"></div>PyYAML</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--blue)"></div>Regex / Socket</div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-card-label">Environment</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--purple)"></div>WSL2 / Ubuntu 24</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--purple)"></div>EVE-NG 6.2.0-4</div>
+      <div class="stack-item"><div class="stack-dot" style="background:var(--purple)"></div>Git / GitHub</div>
+    </div>
+  </div>
+
+  <!-- ── Projects ── -->
+  <div class="section-label">Projects</div>
+  <div class="project-list">
+
+    <div class="project-card">
+      <div>
+        <div class="project-eyebrow">Core-Edge Ring Lab — Ansible</div>
+        <div class="project-title">Multi-Area OSPF Topology Automation</div>
+        <div class="project-desc">
+          End-to-end Ansible automation for a 12-node OSPF multi-area lab topology.
+          Covers operational data collection, topology validation, dynamic inventory
+          generation from live CDP neighbor data, configuration deployment, and
+          running config backup — all driven from a structured inventory with
+          per-node host variables.
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">Ansible</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">CDP Discovery</span>
+          <span class="project-tag">OSPF Validation</span>
+          <span class="project-tag">Config Backup</span>
+          <span class="project-tag">Jinja2</span>
+          <span class="project-tag">Cisco IOL</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-status status-live"><span class="status-dot"></span>Live</div>
+        <span class="project-lab">core-edge-ring</span>
+      </div>
+    </div>
+
+    <div class="project-card" style="opacity:.5">
+      <div>
+        <div class="project-eyebrow">Planned</div>
+        <div class="project-title">NetBox — Source of Truth Integration</div>
+        <div class="project-desc">
+          Python and Ansible integration with a self-hosted NetBox instance as the
+          IPAM and DCIM source of truth. Device records, prefix management, and IP
+          assignment driven from NetBox data rather than static inventory files.
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">NetBox</span>
+          <span class="project-tag">REST API</span>
+          <span class="project-tag">pynetbox</span>
+          <span class="project-tag">IPAM</span>
+          <span class="project-tag">DCIM</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-status status-planned"><span class="status-dot"></span>Planned</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Playbooks ── -->
+  <div class="section-label">Playbook Reference — Core-Edge Ring</div>
+  <table class="playbook-table">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Purpose</th>
+        <th>Operation</th>
+        <th>Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>gather_facts.yml</td>
+        <td>Collects IOS version, interface state, and OSPF neighbor table from all nodes</td>
+        <td><span class="op-badge op-read">Read</span></td>
+        <td>All 12 nodes</td>
+      </tr>
+      <tr>
+        <td>validate_ospf.yml</td>
+        <td>Verifies all expected OSPF adjacencies are in FULL state — pass/fail per node</td>
+        <td><span class="op-badge op-read">Read</span></td>
+        <td>All 12 nodes</td>
+      </tr>
+      <tr>
+        <td>generate_host_vars.py</td>
+        <td>Discovers live CDP neighbors across all nodes and generates per-node host_vars YAML files with interface descriptions</td>
+        <td><span class="op-badge op-gen">Generate</span></td>
+        <td>All 12 nodes</td>
+      </tr>
+      <tr>
+        <td>deploy_descriptions.yml</td>
+        <td>Pushes interface descriptions from host_vars to all devices and saves to NVRAM</td>
+        <td><span class="op-badge op-write">Write</span></td>
+        <td>All 12 nodes</td>
+      </tr>
+      <tr>
+        <td>backup_configs.yml</td>
+        <td>Pulls running configuration from all nodes and saves to timestamped files in the repo</td>
+        <td><span class="op-badge op-read">Read</span></td>
+        <td>All 12 nodes</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Approach ── -->
+  <div class="section-label">Design Approach</div>
+  <div class="approach-grid">
+    <div class="approach-card">
+      <h3>CDP-Driven Inventory</h3>
+      <p>Rather than hardcoding interface connections, a Python script queries live CDP neighbor data from every node and generates host_vars files dynamically. If the topology changes, re-running the script updates the inventory automatically.</p>
+    </div>
+    <div class="approach-card">
+      <h3>Structured Inventory</h3>
+      <p>All 12 nodes are organized into meaningful groups — <code style="font-family:var(--mono);font-size:12px">core</code>, <code style="font-family:var(--mono);font-size:12px">edge</code>, and per-leg subgroups. Playbooks can target the full topology, a single tier, or a specific leg without modifying any code.</p>
+    </div>
+    <div class="approach-card">
+      <h3>Validation Before Deployment</h3>
+      <p>OSPF validation runs as a standalone playbook that can be executed after any config change as a post-change health check — confirming all expected adjacencies are still FULL before considering a change successful.</p>
+    </div>
+    <div class="approach-card">
+      <h3>Config as Code</h3>
+      <p>All playbooks, host variables, and backup configurations are version-controlled in GitHub. Every change is committed with a meaningful message, creating a full audit trail of what changed, when, and why.</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
