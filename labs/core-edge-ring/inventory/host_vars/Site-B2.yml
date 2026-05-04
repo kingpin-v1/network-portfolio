@@ -1,0 +1,7 @@
+interfaces:
+- description: Uplink | AGG2 E1/1 | Area2 | 10.1.2.4/30
+  name: Ethernet0/0
+- description: Uplink | AGG3 E0/3 | Area2 | 10.1.2.12/30
+  name: Ethernet0/1
+- description: Site-B2 | Router-ID 10.0.0.22
+  name: Loopback0

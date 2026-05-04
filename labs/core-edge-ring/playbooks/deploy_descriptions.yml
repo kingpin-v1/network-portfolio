@@ -1,0 +1,30 @@
+---
+- name: Deploy interface descriptions
+  hosts: all
+  gather_facts: false
+  serial: 1
+
+  tasks:
+    - name: Build config commands from host_vars
+      set_fact:
+        config_commands: >-
+          {%- set cmds = [] -%}
+          {%- for intf in interfaces -%}
+            {%- set _ = cmds.append('interface ' + intf.name) -%}
+            {%- set _ = cmds.append(' description ' + intf.description) -%}
+          {%- endfor -%}
+          {{ cmds }}
+
+    - name: Push descriptions via EVE-NG telnet
+      script: >
+        eve_telnet_cfg.py {{ ansible_port }} {{ inventory_hostname }}
+        {{ config_commands | join('|||') | quote }}
+      args:
+        chdir: "{{ playbook_dir }}"
+        executable: python3
+      register: push_result
+      delegate_to: localhost
+
+    - name: Show result
+      debug:
+        msg: "{{ push_result.stdout }}"

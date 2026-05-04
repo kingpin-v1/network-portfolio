@@ -1,0 +1,17 @@
+interfaces:
+- description: Connect | AGG2 E0/0 | Area0 | 10.1.0.0/30
+  name: Ethernet0/0
+- description: Connect | AGG4 E0/1 | Area0 | 10.1.0.12/30
+  name: Ethernet0/1
+- description: Downlink | Site-A1 E0/0 | Area1 | 10.1.1.0/30
+  name: Ethernet0/2
+- description: Downlink | Site-A2 E0/0 | Area1 | 10.1.1.4/30
+  name: Ethernet0/3
+- description: Downlink | Site-D1 E0/1 | Area4 | 10.1.4.8/30
+  name: Ethernet1/0
+- description: Downlink | Site-D2 E0/1 | Area4 | 10.1.4.12/30
+  name: Ethernet1/1
+- description: CLOUD0-LAN-BRIDGE | 192.168.1.253/24
+  name: Ethernet1/2
+- description: AGG1 | Router-ID 10.0.0.1
+  name: Loopback0
