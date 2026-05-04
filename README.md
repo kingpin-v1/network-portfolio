@@ -12,7 +12,7 @@ A collection of self-built network labs documenting hands-on work with routing p
 | Lab | Status | Topics |
 |-----|--------|--------|
 | [Core-Edge Ring](labs/core-edge-ring/) | ✅ Live | OSPF Multi-Area, Dual-Homing, ABR Summarization |
-| Ansible Automation | 🔧 In Progress | Ansible, YAML, Network Automation |
+| [Network Automation — Ansible](labs/ansible/) | ✅ Live | Ansible, Python, CDP Discovery, Config Management |
 | NetBox — Source of Truth | 📋 Planned | IPAM, DCIM, REST API |
 
 ---
